@@ -5,6 +5,9 @@ import Inventory from './pages/Inventory';
 import VehicleDetail from './pages/VehicleDetail';
 import Kredit from './pages/Kredit';
 import TukarTambah from './pages/TukarTambah';
+import Promo from './pages/Promo';
+import About from './pages/About';
+import Contact from './pages/Contact';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 export default function App() {
@@ -17,9 +20,9 @@ export default function App() {
           <Route path="inventory/:id" element={<VehicleDetail />} />
           <Route path="kredit" element={<Kredit />} />
           <Route path="trade-in" element={<TukarTambah />} />
-          <Route path="promo" element={<div className="pt-32 text-center">Halaman Promo (Coming Soon)</div>} />
-          <Route path="about" element={<div className="pt-32 text-center">Halaman Tentang Kami (Coming Soon)</div>} />
-          <Route path="contact" element={<div className="pt-32 text-center">Halaman Kontak (Coming Soon)</div>} />
+          <Route path="promo" element={<Promo />} />
+          <Route path="about" element={<About />} />
+          <Route path="contact" element={<Contact />} />
         </Route>
       </Routes>
     </Router>

@@ -36,6 +36,7 @@ export const Layout = () => {
     { name: 'Tukar Tambah', href: '/trade-in' },
     { name: 'Promo', href: '/promo' },
     { name: 'Tentang Kami', href: '/about' },
+    { name: 'Kontak', href: '/contact' },
   ];
 
   const isHome = location.pathname === '/';
