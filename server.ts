@@ -24,7 +24,7 @@ async function startServer() {
       km: 25000,
       transmission: "Automatic",
       fuel: "Bensin",
-      image: "https://picsum.photos/seed/avanza/800/600",
+      image: "https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&q=80&w=800",
       featured: true,
       description: "Toyota Avanza 1.3 G 2021, tangan pertama, servis rutin, kondisi sangat terawat."
     },
@@ -38,7 +38,7 @@ async function startServer() {
       km: 12000,
       transmission: "Automatic",
       fuel: "Bensin",
-      image: "https://picsum.photos/seed/brio/800/600",
+      image: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&q=80&w=800",
       featured: true,
       description: "Honda Brio RS 2022, warna merah, pajak panjang, siap pakai."
     },
@@ -52,7 +52,7 @@ async function startServer() {
       km: 45000,
       transmission: "Automatic",
       fuel: "Bensin",
-      image: "https://picsum.photos/seed/xpander/800/600",
+      image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=800",
       featured: true,
       description: "Mitsubishi Xpander Ultimate 2020, fitur lengkap, interior bersih, ban tebal."
     },
@@ -66,7 +66,7 @@ async function startServer() {
       km: 60000,
       transmission: "Manual",
       fuel: "Bensin",
-      image: "https://picsum.photos/seed/ertiga/800/600",
+      image: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=800",
       featured: false,
       description: "Suzuki Ertiga GL 2019, mesin halus, AC dingin, irit bahan bakar."
     },
@@ -80,7 +80,7 @@ async function startServer() {
       km: 5000,
       transmission: "Automatic",
       fuel: "Bensin",
-      image: "https://picsum.photos/seed/sigra/800/600",
+      image: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&q=80&w=800",
       featured: false,
       description: "Daihatsu Sigra R Deluxe 2023, seperti baru, km rendah, garansi resmi masih ada."
     }
@@ -105,8 +105,10 @@ async function startServer() {
     res.json({ success: true, message: "Lead captured successfully" });
   });
 
+  const isProd = process.env.NODE_ENV === "production";
+
   // Vite middleware for development
-  if (process.env.NODE_ENV !== "production") {
+  if (!isProd) {
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
