@@ -9,12 +9,66 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/inventory')
-      .then(res => res.json())
-      .then(data => {
+    const fetchCars = async () => {
+      try {
+        const response = await fetch('/api/inventory');
+        if (!response.ok) throw new Error('Failed to fetch');
+        const data = await response.json();
         setFeaturedCars(data.filter((c: Car) => c.featured));
+      } catch (error) {
+        console.error("Error fetching cars:", error);
+        // Fallback data if API fails
+        const fallbackData = [
+          {
+            id: "1",
+            brand: "Toyota",
+            model: "Avanza 1.3 G",
+            year: 2021,
+            price: 185000000,
+            installment: 3500000,
+            km: 25000,
+            transmission: "Automatic",
+            fuel: "Bensin",
+            image: "https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&q=80&w=800",
+            featured: true,
+            description: "Toyota Avanza 1.3 G 2021, tangan pertama, servis rutin, kondisi sangat terawat."
+          },
+          {
+            id: "2",
+            brand: "Honda",
+            model: "Brio RS",
+            year: 2022,
+            price: 165000000,
+            installment: 3100000,
+            km: 12000,
+            transmission: "Automatic",
+            fuel: "Bensin",
+            image: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&q=80&w=800",
+            featured: true,
+            description: "Honda Brio RS 2022, warna merah, pajak panjang, siap pakai."
+          },
+          {
+            id: "3",
+            brand: "Mitsubishi",
+            model: "Xpander Ultimate",
+            year: 2020,
+            price: 225000000,
+            installment: 4200000,
+            km: 45000,
+            transmission: "Automatic",
+            fuel: "Bensin",
+            image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=800",
+            featured: true,
+            description: "Mitsubishi Xpander Ultimate 2020, fitur lengkap, interior bersih, ban tebal."
+          }
+        ];
+        setFeaturedCars(fallbackData);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchCars();
   }, []);
 
   return (
