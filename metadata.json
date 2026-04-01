@@ -1,0 +1,5 @@
+{
+  "name": "Rasyid Mobilindo",
+  "description": "Dealer mobil baru dan bekas terpercaya di Indonesia. Kredit ringan, proses cepat, dan transparan.",
+  "requestFramePermissions": ["geolocation"]
+}
