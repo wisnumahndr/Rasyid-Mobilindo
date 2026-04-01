@@ -10,6 +10,7 @@ export interface Car {
   fuel: string;
   image: string;
   featured: boolean;
+  isSoldOut?: boolean;
   description: string;
 }
 

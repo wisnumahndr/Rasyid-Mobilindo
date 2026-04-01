@@ -33,11 +33,11 @@ export default function VehicleDetail() {
         const fallbackData = [
           { id: "1", brand: "Toyota", model: "Avanza 1.3 G", year: 2021, price: 185000000, installment: 3500000, km: 25000, transmission: "Automatic", fuel: "Bensin", image: "https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&q=80&w=800", featured: true, description: "Toyota Avanza 1.3 G 2021, tangan pertama, servis rutin, kondisi sangat terawat." },
           { id: "2", brand: "Honda", model: "Brio RS", year: 2022, price: 165000000, installment: 3100000, km: 12000, transmission: "Automatic", fuel: "Bensin", image: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&q=80&w=800", featured: true, description: "Honda Brio RS 2022, warna merah, pajak panjang, siap pakai." },
-          { id: "3", brand: "Mitsubishi", model: "Xpander Ultimate", year: 2020, price: 225000000, installment: 4200000, km: 45000, transmission: "Automatic", fuel: "Bensin", image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=800", featured: true, description: "Mitsubishi Xpander Ultimate 2020, fitur lengkap, interior bersih, ban tebal." },
+          { id: "3", brand: "Mitsubishi", model: "Xpander Ultimate", year: 2020, price: 225000000, installment: 4200000, km: 45000, transmission: "Automatic", fuel: "Bensin", image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=800", featured: true, description: "Mitsubishi Xpander Ultimate 2020, fitur lengkap, interior bersih, ban tebal.", isSoldOut: true },
           { id: "4", brand: "Suzuki", model: "Ertiga GL", year: 2019, price: 155000000, installment: 2900000, km: 60000, transmission: "Manual", fuel: "Bensin", image: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=800", featured: false, description: "Suzuki Ertiga GL 2019, mesin halus, AC dingin, irit bahan bakar." },
           { id: "5", brand: "Daihatsu", model: "Sigra R Deluxe", year: 2023, price: 145000000, installment: 2700000, km: 5000, transmission: "Automatic", fuel: "Bensin", image: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&q=80&w=800", featured: false, description: "Daihatsu Sigra R Deluxe 2023, seperti baru, km rendah, garansi resmi masih ada." },
           { id: "6", brand: "Toyota", model: "Innova Reborn V", year: 2018, price: 310000000, installment: 5800000, km: 75000, transmission: "Automatic", fuel: "Diesel", image: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&q=80&w=800", featured: true, description: "Toyota Innova Reborn V Diesel 2018, mesin bertenaga, interior mewah, sangat nyaman." },
-          { id: "7", brand: "Honda", model: "HR-V SE", year: 2022, price: 365000000, installment: 6900000, km: 15000, transmission: "Automatic", fuel: "Bensin", image: "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&q=80&w=800", featured: true, description: "Honda HR-V SE 2022, desain modern, panoramic roof, fitur keselamatan lengkap." },
+          { id: "7", brand: "Honda", model: "HR-V SE", year: 2022, price: 365000000, installment: 6900000, km: 15000, transmission: "Automatic", fuel: "Bensin", image: "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&q=80&w=800", featured: true, description: "Honda HR-V SE 2022, desain modern, panoramic roof, fitur keselamatan lengkap.", isSoldOut: true },
           { id: "8", brand: "Mitsubishi", model: "Pajero Sport Dakar", year: 2019, price: 485000000, installment: 9200000, km: 55000, transmission: "Automatic", fuel: "Diesel", image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=800", featured: false, description: "Mitsubishi Pajero Sport Dakar 2019, gagah, sunroof, mesin diesel powerfull." },
           { id: "9", brand: "Hyundai", model: "Stargazer Prime", year: 2023, price: 275000000, installment: 5200000, km: 8000, transmission: "Automatic", fuel: "Bensin", image: "https://images.unsplash.com/photo-1617469767053-d3b523a0b982?auto=format&fit=crop&q=80&w=800", featured: true, description: "Hyundai Stargazer Prime 2023, futuristik, fitur canggih, garansi panjang." },
           { id: "10", brand: "Wuling", model: "Almaz RS", year: 2021, price: 295000000, installment: 5600000, km: 22000, transmission: "Automatic", fuel: "Bensin", image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=800", featured: false, description: "Wuling Almaz RS 2021, fitur voice command, kamera 360, panoramic sunroof." },
@@ -145,36 +145,57 @@ export default function VehicleDetail() {
           {/* Right: Pricing & CTA */}
           <div className="space-y-6">
             <div className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 sticky top-24">
-              <h1 className="text-3xl font-black text-primary mb-2">{car.brand} {car.model}</h1>
+              <div className="flex justify-between items-start mb-2">
+                <h1 className="text-3xl font-black text-primary">{car.brand} {car.model}</h1>
+                {car.isSoldOut && (
+                  <span className="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase">
+                    SOLD OUT
+                  </span>
+                )}
+              </div>
               <p className="text-slate-400 font-bold mb-6">{car.year} • {car.transmission} • {car.fuel}</p>
               
               <div className="mb-8">
                 <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Harga Cash</p>
-                <p className="text-4xl font-black text-primary">Rp {(car.price / 1000000).toFixed(1)} Juta</p>
+                <p className={`text-4xl font-black ${car.isSoldOut ? 'text-slate-400 line-through' : 'text-primary'}`}>
+                  Rp {(car.price / 1000000).toFixed(1)} Juta
+                </p>
               </div>
 
-              <div className="bg-slate-50 p-6 rounded-2xl mb-8 border border-slate-100">
-                <p className="text-sm font-bold text-accent uppercase tracking-widest mb-1">Estimasi Cicilan</p>
-                <p className="text-2xl font-black text-accent">Rp {(car.installment / 1000000).toFixed(1)} Jt<span className="text-sm text-slate-400">/bln</span></p>
-                <p className="text-xs text-slate-400 mt-2">Tenor 60 Bulan • DP 20%</p>
-              </div>
+              {!car.isSoldOut ? (
+                <>
+                  <div className="bg-slate-50 p-6 rounded-2xl mb-8 border border-slate-100">
+                    <p className="text-sm font-bold text-accent uppercase tracking-widest mb-1">Estimasi Cicilan</p>
+                    <p className="text-2xl font-black text-accent">Rp {(car.installment / 1000000).toFixed(1)} Jt<span className="text-sm text-slate-400">/bln</span></p>
+                    <p className="text-xs text-slate-400 mt-2">Tenor 60 Bulan • DP 20%</p>
+                  </div>
 
-              <div className="space-y-4">
-                <a 
-                  href={`https://wa.me/628123456789?text=Halo Rasyid Mobilindo, saya tertarik dengan ${car.brand} ${car.model} ${car.year}`}
-                  className="w-full btn-whatsapp py-4"
-                >
-                  <MessageCircle size={24} />
-                  Tanya via WhatsApp
-                </a>
-                <button className="w-full btn-primary py-4">
-                  Ajukan Kredit
-                </button>
-                <button className="w-full btn-secondary py-4 flex items-center justify-center gap-2">
-                  <Phone size={20} />
-                  Telepon Dealer
-                </button>
-              </div>
+                  <div className="space-y-4">
+                    <a 
+                      href={`https://wa.me/628123456789?text=Halo Rasyid Mobilindo, saya tertarik dengan ${car.brand} ${car.model} ${car.year}`}
+                      className="w-full btn-whatsapp py-4"
+                    >
+                      <MessageCircle size={24} />
+                      Tanya via WhatsApp
+                    </a>
+                    <button className="w-full btn-primary py-4">
+                      Ajukan Kredit
+                    </button>
+                    <button className="w-full btn-secondary py-4 flex items-center justify-center gap-2">
+                      <Phone size={20} />
+                      Telepon Dealer
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <div className="bg-red-50 border border-red-100 p-6 rounded-2xl text-center">
+                  <p className="text-red-600 font-bold mb-2">Unit Ini Sudah Terjual</p>
+                  <p className="text-sm text-slate-500 mb-6">Maaf, unit ini sudah laku. Silakan cek koleksi mobil kami lainnya yang masih tersedia.</p>
+                  <Link to="/inventory" className="w-full btn-primary py-4 inline-flex items-center justify-center">
+                    Lihat Unit Lainnya
+                  </Link>
+                </div>
+              )}
 
               <div className="mt-8 pt-8 border-t border-slate-100">
                 <div className="flex items-center gap-3 mb-4">

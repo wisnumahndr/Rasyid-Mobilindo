@@ -138,12 +138,24 @@ export const CarCard: React.FC<{ car: Car }> = ({ car }) => {
           <span className="bg-primary text-white text-xs font-bold px-3 py-1 rounded-full uppercase">
             {car.transmission}
           </span>
-          {car.featured && (
+          {car.featured && !car.isSoldOut && (
             <span className="bg-accent text-white text-xs font-bold px-3 py-1 rounded-full uppercase">
               Featured
             </span>
           )}
+          {car.isSoldOut && (
+            <span className="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase">
+              SOLD OUT
+            </span>
+          )}
         </div>
+        {car.isSoldOut && (
+          <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-10">
+            <div className="bg-red-600 text-white font-black px-6 py-2 rounded-lg transform -rotate-12 border-4 border-white shadow-2xl text-xl">
+              SOLD OUT
+            </div>
+          </div>
+        )}
       </div>
       
       <div className="p-6">
