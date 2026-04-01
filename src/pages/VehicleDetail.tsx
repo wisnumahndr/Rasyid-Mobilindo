@@ -21,6 +21,12 @@ export default function VehicleDetail() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (car) {
+      document.title = `${car.brand} ${car.model} ${car.year} - Jual Mobil Bekas Jakarta Selatan | Rasyid Mobilindo`;
+    }
+  }, [car]);
+
+  useEffect(() => {
     const fetchCar = async () => {
       try {
         const response = await fetch(`/api/inventory/${id}`);

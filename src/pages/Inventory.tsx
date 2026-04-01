@@ -11,6 +11,7 @@ export default function Inventory() {
   const [brandFilter, setBrandFilter] = useState('All');
 
   useEffect(() => {
+    document.title = "Daftar Mobil Bekas Berkualitas - Rasyid Mobilindo";
     const fetchCars = async () => {
       try {
         const response = await fetch('/api/inventory');

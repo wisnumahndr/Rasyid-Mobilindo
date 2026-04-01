@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Tag, Calendar, Gift, ArrowRight, MessageCircle } from 'lucide-react';
 import { motion } from 'motion/react';
 
@@ -38,6 +38,10 @@ const promos = [
 ];
 
 export default function Promo() {
+  useEffect(() => {
+    document.title = "Promo Mobil Bekas Murah - Rasyid Mobilindo";
+  }, []);
+
   return (
     <div className="pt-24 pb-24 bg-slate-50">
       <div className="bg-primary py-20 text-white mb-16">

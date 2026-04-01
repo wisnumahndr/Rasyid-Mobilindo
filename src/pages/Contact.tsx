@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { MapPin, Phone, MessageCircle, Mail, Clock, Send, ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
 
@@ -11,6 +11,10 @@ const contactInfo = [
 ];
 
 export default function Contact() {
+  useEffect(() => {
+    document.title = "Hubungi Kami - Rasyid Mobilindo Jakarta Selatan";
+  }, []);
+
   return (
     <div className="pt-24 pb-24 bg-slate-50">
       <div className="bg-primary py-20 text-white mb-16">

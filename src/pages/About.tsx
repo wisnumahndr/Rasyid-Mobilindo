@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ShieldCheck, Users, Trophy, Star, ArrowRight, MessageCircle } from 'lucide-react';
 import { motion } from 'motion/react';
 
@@ -29,6 +29,10 @@ function Calendar({ className, size }: { className?: string, size?: number }) {
 }
 
 export default function About() {
+  useEffect(() => {
+    document.title = "Tentang Kami - Dealer Mobil Bekas Rasyid Mobilindo";
+  }, []);
+
   return (
     <div className="pt-24 pb-24 bg-slate-50">
       <div className="max-w-7xl mx-auto px-4">

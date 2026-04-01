@@ -9,6 +9,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    document.title = "Rasyid Mobilindo - Dealer Mobil Bekas Berkualitas Jakarta Selatan";
     const fetchCars = async () => {
       try {
         const response = await fetch('/api/inventory');
