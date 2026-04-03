@@ -39,6 +39,7 @@ import {
 } from 'firebase/auth';
 import { db, auth } from '../firebase';
 import { Car, Lead } from '../types';
+import { MOCK_CARS } from '../constants';
 
 const ADMIN_EMAIL = 'wisnumhndr4@gmail.com';
 
@@ -172,6 +173,28 @@ export default function Admin() {
       fetchData();
     } catch (error) {
       console.error("Error toggling sold out:", error);
+    }
+  };
+
+  const handleSeedData = async () => {
+    if (!window.confirm("Apakah Anda ingin mengisi database dengan data contoh (mock data)? Ini akan menambahkan 20 mobil ke Firestore.")) return;
+    
+    setLoading(true);
+    try {
+      const carsCollection = collection(db, 'cars');
+      for (const car of MOCK_CARS) {
+        await addDoc(carsCollection, {
+          ...car,
+          createdAt: serverTimestamp()
+        });
+      }
+      alert("Berhasil mengisi database dengan data contoh!");
+      fetchData();
+    } catch (error) {
+      console.error("Error seeding data:", error);
+      alert("Gagal mengisi data. Pastikan Anda memiliki akses admin.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -331,6 +354,22 @@ export default function Admin() {
                 <p className="text-sm text-slate-500 mt-2">Calon pembeli masuk</p>
               </div>
             </div>
+
+            {cars.length === 0 && (
+              <div className="bg-blue-50 border border-blue-100 p-8 rounded-3xl text-center">
+                <CarIcon size={48} className="mx-auto text-blue-300 mb-4" />
+                <h3 className="text-xl font-bold text-blue-900 mb-2">Database Masih Kosong</h3>
+                <p className="text-blue-700 mb-6 max-w-md mx-auto">
+                  Anda belum memiliki data mobil di Firestore. Anda bisa mulai dengan mengisi data contoh (mock data) agar tampilan website tidak kosong.
+                </p>
+                <button 
+                  onClick={handleSeedData}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-lg shadow-blue-200"
+                >
+                  Isi Database dengan Data Contoh
+                </button>
+              </div>
+            )}
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
