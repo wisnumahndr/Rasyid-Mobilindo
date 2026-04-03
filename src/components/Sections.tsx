@@ -25,6 +25,60 @@ import { Link } from 'react-router-dom';
 import { Car } from '../types';
 import { ImageWithFallback } from './ImageWithFallback';
 
+import { db, auth } from '../firebase';
+import { collection, addDoc, serverTimestamp, getDocs, query, where, limit } from 'firebase/firestore';
+
+enum OperationType {
+  CREATE = 'create',
+  UPDATE = 'update',
+  DELETE = 'delete',
+  LIST = 'list',
+  GET = 'get',
+  WRITE = 'write',
+}
+
+interface FirestoreErrorInfo {
+  error: string;
+  operationType: OperationType;
+  path: string | null;
+  authInfo: {
+    userId: string | undefined;
+    email: string | null | undefined;
+    emailVerified: boolean | undefined;
+    isAnonymous: boolean | undefined;
+    tenantId: string | null | undefined;
+    providerInfo: {
+      providerId: string;
+      displayName: string | null;
+      email: string | null;
+      photoUrl: string | null;
+    }[];
+  }
+}
+
+function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
+  const errInfo: FirestoreErrorInfo = {
+    error: error instanceof Error ? error.message : String(error),
+    authInfo: {
+      userId: auth.currentUser?.uid,
+      email: auth.currentUser?.email,
+      emailVerified: auth.currentUser?.emailVerified,
+      isAnonymous: auth.currentUser?.isAnonymous,
+      tenantId: auth.currentUser?.tenantId,
+      providerInfo: auth.currentUser?.providerData.map(provider => ({
+        providerId: provider.providerId,
+        displayName: provider.displayName,
+        email: provider.email,
+        photoUrl: provider.photoURL
+      })) || []
+    },
+    operationType,
+    path
+  }
+  console.error('Firestore Error: ', JSON.stringify(errInfo));
+  throw new Error(JSON.stringify(errInfo));
+}
+
 // --- Components ---
 
 export const Hero = () => {
@@ -312,12 +366,46 @@ export const CreditCalculator = () => {
   const [dp, setDp] = useState(20000000);
   const [tenor, setTenor] = useState(60);
   const [interest, setInterest] = useState(5);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const calculateInstallment = () => {
     const principal = price - dp;
     const totalInterest = (principal * (interest / 100) * (tenor / 12));
     const totalPayment = principal + totalInterest;
     return Math.round(totalPayment / tenor);
+  };
+
+  const handleSubmit = async () => {
+    setSubmitting(true);
+    try {
+      // In a real app, we'd have a form for name/phone
+      // For this demo, we'll use placeholder data or prompt
+      const name = prompt("Masukkan Nama Anda:");
+      const phone = prompt("Masukkan Nomor WhatsApp Anda:");
+      
+      if (!name || !phone) {
+        alert("Nama dan Nomor WhatsApp diperlukan.");
+        setSubmitting(false);
+        return;
+      }
+
+      const leadData = {
+        name,
+        phone,
+        type: 'credit',
+        message: `Simulasi Kredit: Harga Rp ${price.toLocaleString()}, DP Rp ${dp.toLocaleString()}, Tenor ${tenor} Bulan, Cicilan Rp ${calculateInstallment().toLocaleString()}/bln`,
+        createdAt: serverTimestamp()
+      };
+
+      await addDoc(collection(db, 'leads'), leadData);
+      setSubmitted(true);
+      alert("Pengajuan kredit Anda telah terkirim! Tim kami akan segera menghubungi Anda.");
+    } catch (error) {
+      handleFirestoreError(error, OperationType.WRITE, 'leads');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -416,8 +504,12 @@ export const CreditCalculator = () => {
                 <p className="text-4xl font-black text-primary">Rp {calculateInstallment().toLocaleString()}<span className="text-lg text-slate-400">/bln</span></p>
               </div>
 
-              <button className="w-full btn-primary py-4 text-xl">
-                Ajukan Kredit Sekarang
+              <button 
+                onClick={handleSubmit}
+                disabled={submitting || submitted}
+                className="w-full btn-primary py-4 text-xl disabled:opacity-50"
+              >
+                {submitting ? "Mengirim..." : submitted ? "Terkirim!" : "Ajukan Kredit Sekarang"}
               </button>
               <p className="text-center text-xs text-slate-400">
                 *Estimasi di atas belum termasuk biaya admin, asuransi, dan provisi.

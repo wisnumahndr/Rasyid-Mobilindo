@@ -1,0 +1,49 @@
+{
+  "entities": {
+    "Car": {
+      "title": "Car",
+      "description": "A vehicle available in the inventory.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "brand": { "type": "string" },
+        "model": { "type": "string" },
+        "year": { "type": "integer" },
+        "price": { "type": "number" },
+        "installment": { "type": "number" },
+        "km": { "type": "number" },
+        "transmission": { "type": "string" },
+        "fuel": { "type": "string" },
+        "image": { "type": "string" },
+        "featured": { "type": "boolean" },
+        "isSoldOut": { "type": "boolean" },
+        "description": { "type": "string" }
+      },
+      "required": ["brand", "model", "year", "price", "image"]
+    },
+    "Lead": {
+      "title": "Lead",
+      "description": "A customer inquiry or lead.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "carId": { "type": "string" },
+        "type": { "type": "string", "enum": ["inquiry", "credit", "trade-in"] },
+        "message": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "phone", "type"]
+    }
+  },
+  "firestore": {
+    "/cars/{carId}": {
+      "schema": "Car",
+      "description": "Inventory of cars."
+    },
+    "/leads/{leadId}": {
+      "schema": "Lead",
+      "description": "Customer inquiries."
+    }
+  }
+}

@@ -1,0 +1,88 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: cars
+    // Document ID: auto-generated or manual
+    // Fields:
+    //   - brand: string (required)
+    //   - model: string (required)
+    //   - year: number (required)
+    //   - price: number (required)
+    //   - installment: number
+    //   - km: number
+    //   - transmission: string
+    //   - fuel: string
+    //   - image: string (required)
+    //   - featured: bool
+    //   - isSoldOut: bool
+    //   - description: string
+    //
+    // Collection: leads
+    // Document ID: auto-generated
+    // Fields:
+    //   - name: string (required)
+    //   - phone: string (required)
+    //   - carId: string
+    //   - type: string (required, enum: inquiry, credit, trade-in)
+    //   - message: string
+    //   - createdAt: timestamp
+    //
+    // Collection: users
+    // Document ID: uid
+    // Fields:
+    //   - role: string (admin, user)
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+         (request.auth.token.email == "wisnumhndr4@gmail.com" && request.auth.token.email_verified == true));
+    }
+
+    function isValidCar(data) {
+      return data.brand is string && data.brand.size() > 0 && data.brand.size() < 100 &&
+             data.model is string && data.model.size() > 0 && data.model.size() < 100 &&
+             data.year is number && data.year > 1900 && data.year < 2100 &&
+             data.price is number && data.price >= 0 &&
+             data.image is string && data.image.size() > 0 && data.image.size() < 2000;
+    }
+
+    function isValidLead(data) {
+      return data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
+             data.phone is string && data.phone.size() > 0 && data.phone.size() < 20 &&
+             data.type in ['inquiry', 'credit', 'trade-in'];
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow write: if isAdmin();
+    }
+
+    match /cars/{carId} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidCar(request.resource.data);
+    }
+
+    match /leads/{leadId} {
+      allow read: if isAdmin();
+      allow create: if isValidLead(request.resource.data);
+      allow update, delete: if isAdmin();
+    }
+  }
+}
