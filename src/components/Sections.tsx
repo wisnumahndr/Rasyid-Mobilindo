@@ -23,6 +23,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { Car } from '../types';
+import { ImageWithFallback } from './ImageWithFallback';
 
 // --- Components ---
 
@@ -128,11 +129,10 @@ export const CarCard: React.FC<{ car: Car }> = ({ car }) => {
       className="bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-100 group"
     >
       <div className="relative h-56 overflow-hidden">
-        <img 
+        <ImageWithFallback 
           src={car.image} 
           alt={car.model} 
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-          referrerPolicy="no-referrer"
         />
         <div className="absolute top-4 left-4 flex gap-2">
           <span className="bg-primary text-white text-xs font-bold px-3 py-1 rounded-full uppercase">

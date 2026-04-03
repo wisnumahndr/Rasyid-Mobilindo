@@ -14,6 +14,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { motion } from 'motion/react';
+import { ImageWithFallback } from '../components/ImageWithFallback';
 
 export default function VehicleDetail() {
   const { id } = useParams();
@@ -83,11 +84,10 @@ export default function VehicleDetail() {
           {/* Left: Images & Info */}
           <div className="lg:col-span-2 space-y-8">
             <div className="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100">
-              <img 
+              <ImageWithFallback 
                 src={car.image} 
                 alt={car.model} 
                 className="w-full aspect-video object-cover"
-                referrerPolicy="no-referrer"
               />
             </div>
 
