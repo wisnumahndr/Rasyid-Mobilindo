@@ -15,7 +15,8 @@ import {
   Filter,
   ExternalLink,
   Save,
-  X
+  X,
+  Database
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
@@ -310,16 +311,46 @@ export default function Admin() {
           </div>
           
           {activeTab === 'inventory' && (
-            <button 
-              onClick={() => {
-                setEditingCar({});
-                setIsModalOpen(true);
-              }}
-              className="btn-primary flex items-center gap-2"
-            >
-              <Plus size={20} />
-              Tambah Mobil
-            </button>
+            <div className="flex gap-4">
+              <button 
+                onClick={handleSeedData}
+                className="bg-slate-100 text-slate-600 px-6 py-3 rounded-2xl font-bold hover:bg-slate-200 transition-all flex items-center gap-2"
+              >
+                <Database size={20} />
+                Isi Data Contoh
+              </button>
+              <button 
+                onClick={async () => {
+                  if (!window.confirm("HAPUS SEMUA DATA MOBIL? Tindakan ini tidak dapat dibatalkan.")) return;
+                  setLoading(true);
+                  try {
+                    for (const car of cars) {
+                      await deleteDoc(doc(db, 'cars', car.id));
+                    }
+                    alert("Semua data mobil berhasil dihapus.");
+                    fetchData();
+                  } catch (error) {
+                    console.error("Error clearing database:", error);
+                  } finally {
+                    setLoading(false);
+                  }
+                }}
+                className="bg-red-50 text-red-600 border border-red-100 px-6 py-3 rounded-2xl font-bold hover:bg-red-100 transition-all flex items-center gap-2"
+              >
+                <Trash2 size={20} />
+                Hapus Semua
+              </button>
+              <button 
+                onClick={() => {
+                  setEditingCar({});
+                  setIsModalOpen(true);
+                }}
+                className="btn-primary flex items-center gap-2"
+              >
+                <Plus size={20} />
+                Tambah Mobil
+              </button>
+            </div>
           )}
         </header>
 
