@@ -77,7 +77,8 @@ service cloud.firestore {
 
     match /cars/{carId} {
       allow read: if true;
-      allow write: if isAdmin() && isValidCar(request.resource.data);
+      allow create, update: if isAdmin() && isValidCar(request.resource.data);
+      allow delete: if isAdmin();
     }
 
     match /leads/{leadId} {
