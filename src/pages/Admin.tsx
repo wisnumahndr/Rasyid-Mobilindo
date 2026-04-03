@@ -55,6 +55,7 @@ export default function Admin() {
   
   // Leads State
   const [leads, setLeads] = useState<Lead[]>([]);
+  const [loginError, setLoginError] = useState<string | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -106,11 +107,13 @@ export default function Admin() {
   };
 
   const handleLogin = async () => {
+    setLoginError(null);
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login failed:", error);
+      setLoginError(error.message || "Gagal login. Silakan coba lagi.");
     }
   };
 
@@ -202,6 +205,11 @@ export default function Admin() {
             <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
             Login dengan Google
           </button>
+          {loginError && (
+            <p className="mt-4 text-red-500 text-sm font-medium bg-red-50 p-3 rounded-xl border border-red-100">
+              Error: {loginError}
+            </p>
+          )}
           {user && !isAdmin && (
             <p className="mt-4 text-red-500 text-sm font-medium">
               Akun Anda ({user.email}) tidak memiliki akses admin.
