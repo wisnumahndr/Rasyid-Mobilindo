@@ -11,19 +11,20 @@ export const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
   className,
   ...props 
 }) => {
-  const [imgSrc, setImgSrc] = useState(src);
-  const [hasError, setHasError] = useState(false);
+  const [hasError, setHasError] = React.useState(false);
+
+  // Reset error state when src changes
+  React.useEffect(() => {
+    setHasError(false);
+  }, [src]);
 
   const handleError = () => {
-    if (!hasError) {
-      setImgSrc(fallbackSrc);
-      setHasError(true);
-    }
+    setHasError(true);
   };
 
   return (
     <img
-      src={imgSrc}
+      src={hasError ? fallbackSrc : src}
       alt={alt}
       onError={handleError}
       className={className}
