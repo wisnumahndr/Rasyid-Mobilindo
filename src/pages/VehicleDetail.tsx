@@ -23,10 +23,12 @@ export default function VehicleDetail() {
   const { id } = useParams();
   const [car, setCar] = useState<Car | null>(null);
   const [loading, setLoading] = useState(true);
+  const [activeImage, setActiveImage] = useState<string>('');
 
   useEffect(() => {
     if (car) {
       document.title = `${car.brand} ${car.model} ${car.year} - Jual Mobil Bekas Jakarta Selatan | Rasyid Mobilindo`;
+      setActiveImage(car.image);
     }
   }, [car]);
 
@@ -66,12 +68,30 @@ export default function VehicleDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Left: Images & Info */}
           <div className="lg:col-span-2 space-y-8">
-            <div className="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100">
-              <ImageWithFallback 
-                src={car.image} 
-                alt={car.model} 
-                className="w-full aspect-video object-cover"
-              />
+            <div className="space-y-4">
+              <div className="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100">
+                <ImageWithFallback 
+                  src={activeImage || car.image} 
+                  alt={car.model} 
+                  className="w-full aspect-video object-cover"
+                />
+              </div>
+              
+              {car.images && Array.isArray(car.images) && car.images.length > 0 && (
+                <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+                  {[car.image, ...(Array.isArray(car.images) ? car.images : [])].map((img, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setActiveImage(img)}
+                      className={`relative flex-shrink-0 w-24 aspect-video rounded-xl overflow-hidden border-2 transition-all ${
+                        activeImage === img ? 'border-accent' : 'border-transparent opacity-70 hover:opacity-100'
+                      }`}
+                    >
+                      <img src={img} alt={`${car.model} ${index}`} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">

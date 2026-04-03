@@ -56,7 +56,8 @@ service cloud.firestore {
              data.model is string && data.model.size() > 0 && data.model.size() < 100 &&
              data.year is number && data.year > 1900 && data.year < 2100 &&
              data.price is number && data.price >= 0 &&
-             data.image is string && data.image.size() > 0 && data.image.size() < 2000;
+             data.image is string && data.image.size() > 0 && data.image.size() < 2000 &&
+             (!('images' in data) || data.images is list);
     }
 
     function isValidLead(data) {

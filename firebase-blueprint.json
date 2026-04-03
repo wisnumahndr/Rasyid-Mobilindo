@@ -15,6 +15,7 @@
         "transmission": { "type": "string" },
         "fuel": { "type": "string" },
         "image": { "type": "string" },
+        "images": { "type": "array", "items": { "type": "string" } },
         "featured": { "type": "boolean" },
         "isSoldOut": { "type": "boolean" },
         "description": { "type": "string" }

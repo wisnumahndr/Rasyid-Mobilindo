@@ -131,18 +131,24 @@ export default function Admin() {
     if (!editingCar) return;
 
     try {
+      // Process images array from newline-separated string if it's a string
+      const carData = { ...editingCar };
+      if (typeof carData.images === 'string') {
+        carData.images = (carData.images as string).split('\n').map(url => url.trim()).filter(url => url !== '');
+      }
+
       if (editingCar.id) {
         // Update
         const carRef = doc(db, 'cars', editingCar.id);
-        const { id, ...data } = editingCar;
+        const { id, ...data } = carData;
         await updateDoc(carRef, data);
       } else {
         // Create
         await addDoc(collection(db, 'cars'), {
-          ...editingCar,
+          ...carData,
           createdAt: serverTimestamp(),
-          isSoldOut: editingCar.isSoldOut || false,
-          featured: editingCar.featured || false
+          isSoldOut: carData.isSoldOut || false,
+          featured: carData.featured || false
         });
       }
       setIsModalOpen(false);
@@ -451,7 +457,7 @@ export default function Admin() {
                           <img src={car.image} alt={car.model} className="w-16 h-12 object-cover rounded-lg" />
                           <div>
                             <p className="font-bold text-primary">{car.brand} {car.model}</p>
-                            <p className="text-xs text-slate-400">{car.transmission} • {car.km.toLocaleString()} KM</p>
+                            <p className="text-xs text-slate-400">{car.transmission} • {car.km.toLocaleString()} KM • {car.images?.length || 0} Foto</p>
                           </div>
                         </div>
                       </td>
@@ -692,6 +698,16 @@ export default function Admin() {
                       onChange={e => setEditingCar({...editingCar, image: e.target.value})}
                       className="w-full p-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-accent outline-none font-bold"
                       placeholder="https://images.unsplash.com/..."
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-1">URL Gambar Tambahan (Satu per baris)</label>
+                    <textarea 
+                      rows={3}
+                      value={Array.isArray(editingCar?.images) ? editingCar?.images.join('\n') : (editingCar?.images || '')}
+                      onChange={e => setEditingCar({...editingCar, images: e.target.value})}
+                      className="w-full p-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-accent outline-none font-bold"
+                      placeholder="https://images.unsplash.com/image1.jpg&#10;https://images.unsplash.com/image2.jpg"
                     />
                   </div>
                   <div>

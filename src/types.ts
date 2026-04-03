@@ -9,6 +9,7 @@ export interface Car {
   transmission: string;
   fuel: string;
   image: string;
+  images?: string[];
   featured: boolean;
   isSoldOut?: boolean;
   description: string;

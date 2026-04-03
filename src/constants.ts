@@ -1,6 +1,39 @@
 export const MOCK_CARS = [
-  { brand: "Toyota", model: "Avanza 1.3 G", year: 2021, price: 185000000, installment: 3500000, km: 25000, transmission: "Automatic", fuel: "Bensin", image: "https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&q=80&w=800", featured: true, description: "Toyota Avanza 1.3 G 2021, tangan pertama, servis rutin, kondisi sangat terawat." },
-  { brand: "Honda", model: "Brio RS", year: 2022, price: 165000000, installment: 3100000, km: 12000, transmission: "Automatic", fuel: "Bensin", image: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&q=80&w=800", featured: true, description: "Honda Brio RS 2022, warna merah, pajak panjang, siap pakai." },
+  { 
+    brand: "Toyota", 
+    model: "Avanza 1.3 G", 
+    year: 2021, 
+    price: 185000000, 
+    installment: 3500000, 
+    km: 25000, 
+    transmission: "Automatic", 
+    fuel: "Bensin", 
+    image: "https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&q=80&w=800", 
+    images: [
+      "https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&q=80&w=800"
+    ],
+    featured: true, 
+    description: "Toyota Avanza 1.3 G 2021, tangan pertama, servis rutin, kondisi sangat terawat." 
+  },
+  { 
+    brand: "Honda", 
+    model: "Brio RS", 
+    year: 2022, 
+    price: 165000000, 
+    installment: 3100000, 
+    km: 12000, 
+    transmission: "Automatic", 
+    fuel: "Bensin", 
+    image: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&q=80&w=800", 
+    images: [
+      "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&q=80&w=800"
+    ],
+    featured: true, 
+    description: "Honda Brio RS 2022, warna merah, pajak panjang, siap pakai." 
+  },
   { brand: "Mitsubishi", model: "Xpander Ultimate", year: 2020, price: 225000000, installment: 4200000, km: 45000, transmission: "Automatic", fuel: "Bensin", image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=800", featured: true, description: "Mitsubishi Xpander Ultimate 2020, fitur lengkap, interior bersih, ban tebal.", isSoldOut: true },
   { brand: "Suzuki", model: "Ertiga GL", year: 2019, price: 155000000, installment: 2900000, km: 60000, transmission: "Manual", fuel: "Bensin", image: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=800", featured: false, description: "Suzuki Ertiga GL 2019, mesin halus, AC dingin, irit bahan bakar." },
   { brand: "Daihatsu", model: "Sigra R Deluxe", year: 2023, price: 145000000, installment: 2700000, km: 5000, transmission: "Automatic", fuel: "Bensin", image: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&q=80&w=800", featured: false, description: "Daihatsu Sigra R Deluxe 2023, seperti baru, km rendah, garansi resmi masih ada." },
