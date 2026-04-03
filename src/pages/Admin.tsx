@@ -324,13 +324,16 @@ export default function Admin() {
                   if (!window.confirm("HAPUS SEMUA DATA MOBIL? Tindakan ini tidak dapat dibatalkan.")) return;
                   setLoading(true);
                   try {
-                    for (const car of cars) {
-                      await deleteDoc(doc(db, 'cars', car.id));
-                    }
+                    // Fetch fresh list of cars to ensure we have all IDs
+                    const carsSnap = await getDocs(collection(db, 'cars'));
+                    const deletePromises = carsSnap.docs.map(doc => deleteDoc(doc.ref));
+                    await Promise.all(deletePromises);
+                    
                     alert("Semua data mobil berhasil dihapus.");
-                    fetchData();
+                    await fetchData();
                   } catch (error) {
                     console.error("Error clearing database:", error);
+                    alert("Gagal menghapus data. Silakan coba lagi.");
                   } finally {
                     setLoading(false);
                   }
