@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
-import { MapPin, Phone, MessageCircle, Mail, Clock, Send, ArrowRight } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { MapPin, Phone, MessageCircle, Mail, Clock, Send, ArrowRight, Loader2 } from 'lucide-react';
 import { motion } from 'motion/react';
+import { db } from '../firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const contactInfo = [
   { id: 1, label: "Alamat Showroom", value: "Jl. Raya Otomotif No. 123, Jakarta Selatan, Indonesia", icon: <MapPin className="text-accent" size={24} /> },
@@ -11,9 +13,38 @@ const contactInfo = [
 ];
 
 export default function Contact() {
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    subject: 'Tanya Stok Mobil',
+    message: ''
+  });
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
   useEffect(() => {
     document.title = "Hubungi Kami - Rasyid Mobilindo Jakarta Selatan";
   }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      await addDoc(collection(db, 'leads'), {
+        ...formData,
+        type: 'contact',
+        createdAt: serverTimestamp()
+      });
+      setSubmitted(true);
+      setFormData({ name: '', phone: '', subject: 'Tanya Stok Mobil', message: '' });
+      alert("Pesan Anda telah terkirim! Tim kami akan segera menghubungi Anda.");
+    } catch (error) {
+      console.error("Error submitting contact form:", error);
+      alert("Gagal mengirim pesan. Silakan coba lagi nanti.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className="pt-24 pb-24 bg-slate-50">
@@ -78,12 +109,15 @@ export default function Contact() {
           {/* Contact Form */}
           <div className="bg-white p-10 rounded-[40px] shadow-xl border border-slate-100">
             <h2 className="text-3xl font-black text-primary mb-8">Kirim Pesan</h2>
-            <form className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-bold text-slate-500 mb-2 uppercase tracking-widest">Nama Lengkap</label>
                   <input 
+                    required
                     type="text" 
+                    value={formData.name}
+                    onChange={e => setFormData({...formData, name: e.target.value})}
                     placeholder="Masukkan nama Anda" 
                     className="w-full px-6 py-4 rounded-2xl bg-slate-50 border border-slate-100 outline-none focus:ring-2 focus:ring-accent transition-all"
                   />
@@ -91,7 +125,10 @@ export default function Contact() {
                 <div>
                   <label className="block text-sm font-bold text-slate-500 mb-2 uppercase tracking-widest">Nomor WhatsApp</label>
                   <input 
+                    required
                     type="tel" 
+                    value={formData.phone}
+                    onChange={e => setFormData({...formData, phone: e.target.value})}
                     placeholder="Contoh: 08123456789" 
                     className="w-full px-6 py-4 rounded-2xl bg-slate-50 border border-slate-100 outline-none focus:ring-2 focus:ring-accent transition-all"
                   />
@@ -99,7 +136,11 @@ export default function Contact() {
               </div>
               <div>
                 <label className="block text-sm font-bold text-slate-500 mb-2 uppercase tracking-widest">Subjek</label>
-                <select className="w-full px-6 py-4 rounded-2xl bg-slate-50 border border-slate-100 outline-none focus:ring-2 focus:ring-accent transition-all appearance-none">
+                <select 
+                  value={formData.subject}
+                  onChange={e => setFormData({...formData, subject: e.target.value})}
+                  className="w-full px-6 py-4 rounded-2xl bg-slate-50 border border-slate-100 outline-none focus:ring-2 focus:ring-accent transition-all appearance-none"
+                >
                   <option>Tanya Stok Mobil</option>
                   <option>Pengajuan Kredit</option>
                   <option>Tukar Tambah</option>
@@ -109,14 +150,24 @@ export default function Contact() {
               <div>
                 <label className="block text-sm font-bold text-slate-500 mb-2 uppercase tracking-widest">Pesan Anda</label>
                 <textarea 
+                  required
                   rows={4} 
+                  value={formData.message}
+                  onChange={e => setFormData({...formData, message: e.target.value})}
                   placeholder="Apa yang bisa kami bantu?" 
                   className="w-full px-6 py-4 rounded-2xl bg-slate-50 border border-slate-100 outline-none focus:ring-2 focus:ring-accent transition-all resize-none"
                 ></textarea>
               </div>
-              <button className="w-full bg-primary hover:bg-primary/90 text-white py-5 rounded-2xl font-black text-lg transition-all flex items-center justify-center gap-3 shadow-xl shadow-primary/20">
-                <Send size={20} />
-                Kirim Pesan Sekarang
+              <button 
+                disabled={submitting}
+                className="w-full bg-primary hover:bg-primary/90 text-white py-5 rounded-2xl font-black text-lg transition-all flex items-center justify-center gap-3 shadow-xl shadow-primary/20 disabled:opacity-50"
+              >
+                {submitting ? (
+                  <Loader2 className="animate-spin" size={20} />
+                ) : (
+                  <Send size={20} />
+                )}
+                {submitting ? "Mengirim..." : "Kirim Pesan Sekarang"}
               </button>
             </form>
           </div>

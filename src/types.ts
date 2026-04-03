@@ -15,9 +15,11 @@ export interface Car {
 }
 
 export interface Lead {
+  id: string;
   name: string;
   phone: string;
   carId?: string;
-  type: 'inquiry' | 'credit' | 'trade-in';
+  type: 'inquiry' | 'credit' | 'trade-in' | 'contact';
   message?: string;
+  createdAt?: any;
 }

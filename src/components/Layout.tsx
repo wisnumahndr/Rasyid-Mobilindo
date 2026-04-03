@@ -181,6 +181,7 @@ export const Layout = () => {
 
           <div className="pt-12 border-t border-white/10 text-center text-slate-500 text-sm">
             <p>© 2026 Rasyid Mobilindo. All Rights Reserved. Built for conversion.</p>
+            <Link to="/admin" className="mt-2 inline-block hover:text-accent transition-colors opacity-50 hover:opacity-100">Admin Portal</Link>
           </div>
         </div>
       </footer>

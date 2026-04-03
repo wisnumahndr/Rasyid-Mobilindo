@@ -8,12 +8,14 @@ import TukarTambah from './pages/TukarTambah';
 import Promo from './pages/Promo';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import Admin from './pages/Admin';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 export default function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/admin" element={<Admin />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="inventory" element={<Inventory />} />
