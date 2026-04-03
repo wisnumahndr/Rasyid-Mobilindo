@@ -344,5 +344,22 @@ export const MOCK_CARS = [
     ],
     featured: true, 
     description: "Wuling Air EV Long Range 2022, mobil listrik mungil, bebas ganjil genap, irit biaya operasional." 
+  },
+  { 
+    brand: "Test", 
+    model: "Gambar Rusak", 
+    year: 2024, 
+    price: 100000000, 
+    installment: 2000000, 
+    km: 0, 
+    transmission: "Automatic", 
+    fuel: "Bensin", 
+    image: "https://broken-link-test.com/invalid-image.jpg", 
+    images: [
+      "https://broken-link-test.com/invalid-image-1.jpg",
+      "https://broken-link-test.com/invalid-image-2.jpg"
+    ],
+    featured: true, 
+    description: "Ini adalah unit percobaan untuk mengetes fitur fallback image (gambar cadangan) jika URL gambar utama rusak atau tidak ditemukan." 
   }
 ];
